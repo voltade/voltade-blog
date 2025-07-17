@@ -1,0 +1,119 @@
+---
+title: "Automated Lead Distribution & Dynamic WhatsApp Messaging"
+description: "Discover revolutionary CRM features: automated round-robin lead assignment through user groups and interactive WhatsApp messaging with lists, buttons, and CTA links for enhanced customer engagement."
+date: "June 11, 2025"
+category: "Product Update"
+readTime: "4 min read"
+author: "Voltade Team"
+image: "/images/blog/round-robin-lead.jpg"
+tags: ["Lead Management", "WhatsApp Business", "CRM Automation", "Customer Engagement"]
+content: { width: "100%" }
+showSidebar: false
+showOutline: true
+---
+
+import { BlogLayout } from "../../layouts/BlogpageLayout.tsx";
+
+export const fm = {
+    title: "Automated Lead Distribution & Dynamic WhatsApp Messaging",
+    description:
+        "Discover revolutionary CRM features: automated round-robin lead assignment through user groups and interactive WhatsApp messaging with lists, buttons, and CTA links for enhanced customer engagement.",
+    date: "June 11, 2025",
+    category: "Product Update",
+    readTime: "4 min read",
+    author: "Voltade Team",
+    image: "/images/blog/product-updates/round-robin-lead.jpg",
+    tags: ["Lead Management", "WhatsApp Business", "CRM Automation", "Customer Engagement"],
+};
+
+<BlogLayout frontmatter={fm}>
+
+## Automated Round-Robin Lead Assignment via User Groups
+
+Manual lead assignment often creates bottlenecks and inconsistencies in your sales process.
+
+With automated round-robin lead assignment in your CRM, incoming leads are systematically distributed one by one to team members within predefined user groups, ensuring no lead is delayed and no team member is overlooked.
+
+### Key Benefits of Automated Lead Assignment
+
+**Instant lead routing**: Leads are distributed immediately without manual intervention.
+
+**Fair distribution**: Guarantees every incoming lead is promptly assigned to the next available team member.
+
+**Operational efficiency**: Eliminates manual assignment tasks for sales managers.
+
+### Practical Implementation
+
+Consider a scenario with three sales representatives in your Northern Territory team. You can organize them into a "Northern Sales" user group. When new leads from that territory arrive, they're automatically assigned to representatives in a rotating sequence. This ensures rapid follow-ups and balanced workloads.
+
+For instance, if your user group includes: Sarah, Michael, and Rachel. As leads are received, your CRM assigns them using round-robin distribution:
+
+-   **Lead 1** → Sarah
+-   **Lead 2** → Michael
+-   **Lead 3** → Rachel
+-   **Lead 4** → Sarah _(cycle continues)_
+-   **Lead 5** → Michael
+
+This systematic rotation ensures balanced lead distribution among team members. It minimizes manual overhead, accelerates lead response times, and maintains transparent, predictable assignment processes.
+
+### Setup Instructions
+
+**Important**: User group creation requires administrator permissions.
+
+1. Navigate to **Settings > User Management > Groups**
+2. Select **"Create new"** and enter group name and description. Add team members to the group and save
+3. Configure automated lead assignment through workflow automation:
+    - Go to **Settings > Automation > Workflows**
+    - Click **Create new workflow**
+    - Add workflow name and description
+    - Set **Create lead** as the trigger event
+    - Select **Update lead** as the action
+    - Choose **Assigned to** in lead details and select your user group
+    - Save and activate the workflow
+
+Your CRM will now automatically distribute leads to users using round-robin logic.
+
+## Dynamic WhatsApp Messaging in CRM
+
+![Interactive WhatsApp Messages](/images/blog/product-updates/whatsapp-coexistence.jpg)
+
+With enhanced WhatsApp messaging capabilities, you can send interactive, button-driven messages directly from your CRM. These include dynamic lists, quick-reply buttons, and call-to-action links, enabling customers to respond efficiently and clearly.
+
+> **Key Distinction**: Template messages require Meta's approval before deployment, while interactive messages can be implemented immediately without prior approval.
+
+### Why This Enhances Your Business
+
+**No approval delays**: Interactive messages bypass Meta's pre-approval requirements.
+
+**Increased engagement**: Buttons and lists simplify customer actions and responses.
+
+**Professional presentation**: Clean, intuitive interfaces for real-time conversations.
+
+### Use Case Examples
+
+**List messages**: Perfect for service menus, appointment availability, or product catalogs.
+
+**Quick-reply buttons**: Ideal for confirmations like "Confirm Booking" or "Request Support".
+
+**Action buttons**: Direct users to your website or enable click-to-call functionality.
+
+**Example scenario**: When a customer inquires about delivery timeframes, instead of typing multiple options, send an interactive list. They simply tap their preferred option, streamlining the conversation and improving satisfaction.
+
+### Implementation Guide
+
+1. Go to **Settings > Customization > Channel Templates**
+2. Click **"Create new"** and select **"WhatsApp Cloud API"**
+3. Choose **Message type** as **Interactive message**. Add required details and select your interactive message type
+4. For comprehensive setup instructions, refer to our (coming soon ...)
+
+**Note**: Interactive messages work in 1:1 conversations, greeting messages, or AI chatbots, but only within the 24-hour WhatsApp messaging window. This window begins when the customer or lead initiates contact.
+
+## Start Implementing Today
+
+These advanced features are designed to empower your sales and support teams with enhanced speed, organization, and intelligent automation.
+
+Access your CRM account now to enable automated round-robin lead assignment and begin sending dynamic WhatsApp messages today.
+
+For detailed assistance, [contact our support team](mailto:team@voltade.com) or explore our comprehensive docs (coming soon ...).
+
+</BlogLayout>

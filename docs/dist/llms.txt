@@ -1,0 +1,5 @@
+# Voltade Blog
+
+> AI-powered CRM insights and guides for businesses
+
+## Docs

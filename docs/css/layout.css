@@ -1,0 +1,27 @@
+.vocs_DocsLayout {
+    --vocs_DocsLayout_leftGutterWidth: 300px;
+}
+
+.vocs_Outline {
+    width: var(--vocs_DocsLayout_leftGutterWidth);
+}
+
+.vocs_DocsLayout_gutterRight {
+    width: var(--vocs_DocsLayout_leftGutterWidth);
+}
+
+@media (min-width: 1081px) {
+    .vocs_DesktopTopNav_logo[data-page="index"] {
+        display: none;
+    }
+
+    .vocs_Content {
+        width: calc(100% - var(--vocs_DocsLayout_leftGutterWidth));
+    }
+}
+
+@media (max-width: 1700px) {
+    .vocs_Content {
+        width: 100%;
+    }
+}

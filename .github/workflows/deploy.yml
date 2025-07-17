@@ -1,0 +1,125 @@
+name: 🚀 Build & Deploy Blog to Cloudflare
+
+on:
+    push:
+        branches: [main]
+        paths:
+            - "docs/**"
+            - "package.json"
+            - "package-lock.json"
+            - "vocs.config.ts"
+            - "vocs.config.js"
+
+    # Allow manual triggering
+    workflow_dispatch:
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: 📥 Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: 🟢 Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "18"
+                  cache: "npm"
+
+            - name: 📦 Install dependencies
+              run: |
+                  echo "📦 Installing dependencies..."
+                  npm ci
+                  echo "✅ Dependencies installed!"
+
+            - name: 🔍 Check for new grant posts
+              id: check-grants
+              run: |
+                  echo "🔍 Checking for new grant posts..."
+                  if [ -d "docs/pages/grants" ]; then
+                    GRANT_COUNT=$(find docs/pages/grants -name "*.mdx" | wc -l)
+                    echo "📊 Found $GRANT_COUNT grant posts"
+                    echo "grant_count=$GRANT_COUNT" >> $GITHUB_OUTPUT
+                  else
+                    echo "📁 No grants directory found"
+                    echo "grant_count=0" >> $GITHUB_OUTPUT
+                  fi
+
+            - name: 🔄 Regenerate blog index
+              run: |
+                  echo "🔄 Regenerating blog index..."
+                  if [ -f "scripts/regenerate-index.js" ]; then
+                    node scripts/regenerate-index.js
+                    echo "✅ Blog index regenerated!"
+                  else
+                    echo "⚠️  No regenerate script found, skipping..."
+                  fi
+
+            - name: 📝 Check Vocs config
+              run: |
+                  echo "📝 Checking Vocs configuration..."
+                  if [ -f "vocs.config.ts" ]; then
+                    echo "✅ Found vocs.config.ts"
+                  elif [ -f "vocs.config.js" ]; then
+                    echo "✅ Found vocs.config.js"
+                  else
+                    echo "⚠️  No vocs config found, using defaults"
+                  fi
+
+            - name: 🔨 Build Vocs project
+              run: |
+                  echo "🔨 Building Vocs project..."
+                  echo "📁 Current directory contents:"
+                  ls -la
+
+                  echo "📦 Package.json scripts:"
+                  cat package.json | grep -A 10 '"scripts"'
+
+                  echo "🚀 Running build..."
+                  npm run build
+
+                  echo "✅ Build completed!"
+                  echo "📁 Dist directory contents:"
+                  ls -la dist/ || echo "❌ No dist directory found"
+
+            - name: 🌐 Deploy to Cloudflare Pages
+              uses: cloudflare/pages-action@v1
+              with:
+                  apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+                  accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+                  projectName: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
+                  directory: dist
+                  gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: 📝 Commit updated files
+              run: |
+                  echo "📝 Committing any updated files..."
+                  git config --local user.email "action@github.com"
+                  git config --local user.name "GitHub Action Bot"
+
+                  # Add any auto-generated files
+                  git add docs/pages/index.mdx || true
+                  git add docs/pages/grants/ || true
+
+                  # Only commit if there are changes
+                  if git diff --staged --quiet; then
+                    echo "📝 No changes to commit"
+                  else
+                    git commit -m "🤖 Auto-update blog index and grant posts"
+                    git push || echo "⚠️  Push failed, but continuing..."
+                  fi
+
+            - name: 🎉 Deployment success
+              run: |
+                  echo "🎉 Deployment completed successfully!"
+                  echo "📊 Grant posts: ${{ steps.check-grants.outputs.grant_count }}"
+                  echo "🌐 Your blog should be live at your Cloudflare domain!"
+
+            - name: 📧 Notify on failure
+              if: failure()
+              run: |
+                  echo "❌ Deployment failed!"
+                  echo "Check the logs above for more details."

@@ -1,0 +1,308 @@
+---
+showSidebar: true
+showSponsor: true
+showOutline: false
+showAicta: false
+content: { width: "100%" }
+---
+
+import { BlogCard } from "../components/BlogCard";
+import { CategoryBadge } from "../components/CategoryBadge";
+import { NewsletterForm } from "../components/NewsletterForm";
+import { HomepageLayout } from "../layouts/HomepageLayout";
+import "../css/styles.css";
+import "../css/layout.css";
+
+<HomepageLayout>
+
+# CRM Insights & Business Growth Hub
+
+<div className="hero-section">
+    <div className="hero-description">
+        Unlock the power of intelligent customer relationship management with expert insights, automation strategies,
+        and cutting-edge business tools designed for modern enterprises.
+    </div>
+
+    <div className="hero-stats">
+        <div className="stat-item">
+            <span className="stat-number">50+</span>
+            <span className="stat-label">Expert Guides</span>
+        </div>
+        <div className="stat-item">
+            <span className="stat-number">10k+</span>
+            <span className="stat-label">Monthly Readers</span>
+        </div>
+        <div className="stat-item">
+            <span className="stat-number">95%</span>
+            <span className="stat-label">Success Rate</span>
+        </div>
+    </div>
+
+</div>
+
+## Featured Articles
+
+<section className="blog-grid featured-grid">
+    <BlogCard
+        title="Automated Lead Distribution & Dynamic WhatsApp Messaging"
+        description="Discover revolutionary CRM features: automated round-robin lead assignment through user groups and interactive WhatsApp messaging with lists, buttons, and CTA links for enhanced customer engagement."
+        date="June 11, 2025"
+        category="Product Updates"
+        readTime="4 min read"
+        image="/images/blog/product-updates/round-robin-lead.jpg"
+        link="/product-updates/round-robin-lead-assignment"
+        featured={true}
+    />
+
+    <BlogCard
+        title="Top AI-Powered CRM Solutions for Singapore Enterprises"
+        description="Comprehensive analysis of leading AI CRM platforms tailored for Singapore businesses. Compare features, pricing, and ROI potential."
+        category="CRM"
+        readTime="11 min read"
+        date="May 2025"
+        image="/images/blog/crm/ai-crm-singapore.jpg"
+        link="/crm/best-software"
+        featured={true}
+    />
+
+    <BlogCard
+        title="WhatsApp Business Automation: 2025 Implementation Guide"
+        description="Unlock WhatsApp automation potential for business growth. Learn about features, benefits, use cases, and implementation strategies."
+        category="Sales & Marketing"
+        readTime="9 min read"
+        date="March 28, 2024"
+        image="/images/blog/sales-marketing/whatsapp-automation.jpg"
+        link="/sales-marketing/whatsapp-automation"
+        featured={true}
+    />
+
+</section>
+
+## Product Updates
+
+<section className="blog-grid" id="product-updates">
+    <BlogCard
+        title="New Year 2025 Feature Release: What's Coming Next"
+        description="Exciting preview of upcoming features including advanced analytics, team collaboration tools, and enhanced security measures launching in early 2025."
+        category="Product Updates"
+        readTime="6 min read"
+        date="January 2025"
+        image="/images/blog/product-updates/2025-feature-preview.jpg"
+        link="/product-updates/latest-updates"
+    />
+    <BlogCard
+        title="Automated Lead Distribution & Dynamic WhatsApp Messaging"
+        description="Discover revolutionary CRM features: automated round-robin lead assignment through user groups and interactive WhatsApp messaging with lists, buttons, and CTA links for enhanced customer engagement."
+        date="June 11, 2025"
+        category="Product Updates"
+        readTime="4 min read"
+        image="/images/blog/product-updates/round-robin-lead.jpg"
+        link="/product-updates/round-robin-lead-assignment"
+    />
+    <BlogCard
+        title="Advanced Chatbot Personas with Cloud Storage Integration"
+        description="Explore custom chatbot personalities with seamless Google Drive and OneDrive integration for enhanced knowledge management capabilities."
+        category="Product Updates"
+        readTime="4 min read"
+        date="May 19, 2025"
+        image="/images/blog/product-updates/custom-chatbot-persona.jpg"
+        link="/product-updates/chatbot-integration"
+    />
+
+    <BlogCard
+        title="Opportunity Broadcasting & Message Editing Capabilities"
+        description="Learn about advanced broadcast features for opportunities, enhanced message editing functionality, and improved communication workflows."
+        category="Product Updates"
+        readTime="4 min read"
+        date="March 29, 2024"
+        image="/images/blog/product-updates/broadcast-opportunities.jpg"
+        link="/product-updates/broadcast-features"
+    />
+
+</section>
+
+## Sales & Marketing Excellence
+
+<section className="blog-grid" id="sales-marketing">
+    <BlogCard
+        title="Revolutionary CRM Phone System Integration"
+        description="Transform team productivity with integrated CRM phone systems. Improve call tracking, follow-ups, and business communication efficiency."
+        category="Sales & Marketing"
+        readTime="8 min read"
+        date="April 4, 2025"
+        image="/images/blog/sales-marketing/crm-phone-integration.jpg"
+        link="/sales-marketing/crm-phone-integration"
+    />
+
+    <BlogCard
+        title="Conversational AI for Sales: Top 8 Implementation Strategies"
+        description="Comprehensive guide to implementing conversational chatbots in sales and marketing to boost engagement, automate processes, and drive revenue."
+        category="Sales & Marketing"
+        readTime="7 min read"
+        date="February 19, 2025"
+        image="/images/blog/sales-marketing/conversational-chatbots.jpg"
+        link="/sales-marketing/conversational-ai-sales"
+    />
+
+    <BlogCard
+        title="Conversational AI in Sales: 2025 Comprehensive Guide"
+        description="Explore how Conversational AI transforms sales processes, boosts efficiency, and closes deals faster with advanced automation techniques."
+        category="Sales & Marketing"
+        readTime="12 min read"
+        date="October 10, 2024"
+        image="/images/blog/sales-marketing/conversational-ai-guide.jpg"
+        link="/sales-marketing/conversational-ai-guide"
+    />
+
+    <BlogCard
+        title="10 Critical Sales Management Mistakes to Avoid"
+        description="Identify and eliminate common sales management pitfalls that hinder team performance. Learn practical solutions for sustainable growth."
+        category="Sales & Marketing"
+        readTime="10 min read"
+        date="October 25, 2024"
+        image="/images/blog/sales-marketing/sales-management-mistakes.jpg"
+        link="/sales-marketing/sales-management-mistakes"
+    />
+
+    <BlogCard
+        title="WhatsApp Business Automation: 2025 Implementation Guide"
+        description="Unlock WhatsApp automation potential for business growth. Learn about features, benefits, use cases, and implementation strategies."
+        category="Sales & Marketing"
+        readTime="9 min read"
+        date="March 28, 2024"
+        image="/images/blog/sales-marketing/whatsapp-automation.jpg"
+        link="/sales-marketing/whatsapp-automation"
+    />
+
+    <BlogCard
+        title="Essential WhatsApp Business Features for 2025"
+        description="Comprehensive overview of WhatsApp business capabilities including customer engagement, operational efficiency, and growth optimization."
+        category="Sales & Marketing"
+        readTime="9 min read"
+        date="September 30, 2024"
+        image="/images/blog/sales-marketing/whatsapp-business-features.jpg"
+        link="/sales-marketing/whatsapp-business-features"
+    />
+
+    <BlogCard
+        title="Top 10 Sales Acceleration Tools for Business Growth"
+        description="Discover essential sales software solutions for lead management, task automation, and accelerated business growth from free to premium options."
+        category="Sales & Marketing"
+        readTime="8 min read"
+        date="June 14, 2024"
+        image="/images/blog/sales-marketing/sales-tools.jpg"
+        link="/sales-marketing/sales-tools"
+    />
+
+    <BlogCard
+        title="5 Essential WhatsApp CRM Techniques for Customer Engagement"
+        description="Master WhatsApp CRM integration strategies for enhanced customer service, improved efficiency, and measurable business impact."
+        category="Sales & Marketing"
+        readTime="7 min read"
+        date="April 12, 2024"
+        image="/images/blog/sales-marketing/whatsapp-crm-techniques.jpg"
+        link="/sales-marketing/whatsapp-crm-techniques"
+    />
+
+</section>
+
+## CRM Mastery
+
+<section className="blog-grid" id="crm">
+    <BlogCard
+        title="CRM 2.0: AI-Powered Customer Relationship Revolution"
+        description="Explore how artificial intelligence is transforming CRM systems, enabling businesses to enhance customer engagement and operational efficiency."
+        category="CRM"
+        readTime="7 min read"
+        date="May 30, 2024"
+        image="/images/blog/crm/crm-ai-revolution.jpg"
+        link="/crm/ai-crm-revolution"
+    />
+
+    <BlogCard
+        title="Advanced CRM Automation Strategies for Growing Businesses"
+        description="Unleash CRM automation potential with proven strategies for task streamlining, personalized outreach, and valuable business insights."
+        category="CRM"
+        readTime="10 min read"
+        date="April 19, 2024"
+        image="/images/blog/crm/crm-automation-hacks.jpg"
+        link="/crm/automation-strategies"
+    />
+
+    <BlogCard
+        title="WhatsApp CRM Cost Reduction: 5 Proven Strategies"
+        description="Discover how WhatsApp CRM integration can significantly reduce business operational costs while improving customer communication efficiency."
+        category="CRM"
+        readTime="6 min read"
+        date="March 7, 2024"
+        image="/images/blog/crm/whatsapp-crm-cost-reduction.jpg"
+        link="/crm/cost-reduction-strategies"
+    />
+
+    <BlogCard
+        title="Ultimate CRM Software Selection Guide for Businesses"
+        description="Navigate the complex CRM software landscape with expert guidance on selecting the perfect solution for your specific business requirements."
+        category="CRM"
+        readTime="6 min read"
+        date="February 26, 2024"
+        image="/images/blog/crm/crm-software-selection.jpg"
+        link="/crm/software-selection-guide"
+    />
+
+</section>
+
+## Product Support & Configuration
+
+<section className="blog-grid" id="product-support">
+    <BlogCard
+        title="Message Module Profile Permissions: Complete Configuration Guide"
+        description="Comprehensive guide for defining and managing message permissions in CRM systems to enhance communication security and data protection."
+        category="Product Support"
+        readTime="4 min read"
+        date="August 9, 2024"
+        image="/images/blog/product-support/profile-permissions.jpg"
+        link="/product-support/profile-permissions"
+    />
+</section>
+
+## Grants
+
+## Categories
+
+<div className="category-grid">
+    <CategoryBadge
+        name="Product Updates"
+        count="4"
+        color="blue"
+        description="Latest features and improvements"
+        href="#product-updates"
+    />
+    <CategoryBadge
+        name="Sales & Marketing"
+        count="8"
+        color="green"
+        description="Growth strategies and automation"
+        href="#sales-marketing"
+    />
+    <CategoryBadge name="CRM" count="4" color="purple" description="Customer relationship management" href="#crm" />
+    <CategoryBadge
+        name="Product Support"
+        count="1"
+        color="orange"
+        description="Technical guides and troubleshooting"
+        href="#product-support"
+    />
+    <CategoryBadge
+        name="Grants"
+        count="0"
+        color="red"
+        description="Technical guides and troubleshooting"
+        href="#product-support"
+    />
+</div>
+
+## Connect With Us !
+
+<NewsletterForm />
+
+</HomepageLayout>

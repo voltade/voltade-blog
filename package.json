@@ -1,0 +1,23 @@
+{
+  "name": "voltade-blog",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+ "scripts": {
+    "dev": "vocs dev",
+    "build": "vocs build",
+    "preview": "vocs preview",
+    "regenerate-index": "node scripts/regenerate-index.js"
+  },
+  "dependencies": {
+    "react": "latest",
+    "react-dom": "latest",
+    "react-router-dom": "^7.6.2",
+    "vocs": "^1.0.0-next.20250228T022228"
+  },
+  "devDependencies": {
+    "@types/react": "latest",
+    "typescript": "latest",
+    "wrangler": "^4.24.3"
+  }
+}
