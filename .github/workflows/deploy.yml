@@ -51,7 +51,7 @@ jobs:
             - name: 🔄 Regenerate blog index
               run: |
                   echo "🔄 Regenerating blog index..."
-                  if [ -f "scripts/regenerate-index.js" ]; then
+                  if [ -f "docs/scripts/regenerate-index.js" ]; then
                     node docs/scripts/regenerate-index.js
                     echo "✅ Blog index regenerated!"
                   else
