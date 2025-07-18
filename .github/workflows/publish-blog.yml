@@ -1,0 +1,68 @@
+name: 📝 Publish Blog Post
+
+on:
+    repository_dispatch:
+        types: [publish-blog]
+
+jobs:
+    publish:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: 📥 Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  token: ${{ secrets.BLOG_PUBLISH_TOKEN }}
+                  fetch-depth: 0
+
+            - name: 🟢 Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "24"
+                  cache: "npm"
+
+            - name: 📦 Install dependencies
+              run: |
+                  echo "📦 Installing dependencies..."
+                  npm ci
+                  echo "✅ Dependencies installed!"
+
+            - name: 📝 Create blog post
+              run: |
+                  echo "📝 Creating blog post: ${{ github.event.client_payload.filename }}"
+                  mkdir -p docs/pages/grants
+                  echo "${{ github.event.client_payload.content }}" > "docs/pages/grants/${{ github.event.client_payload.filename }}"
+                  echo "✅ Blog post created!"
+
+            - name: 🔄 Regenerate blog index
+              run: |
+                  echo "🔄 Regenerating blog index..."
+                  if [ -f "docs/scripts/regenerate-index.js" ]; then
+                    node docs/scripts/regenerate-index.js
+                    echo "✅ Blog index regenerated!"
+                  else
+                    echo "⚠️  No regenerate script found, skipping..."
+                  fi
+
+            - name: 🚀 Commit and push changes
+              run: |
+                  git config --local user.email "blog-publisher@voltade.com"
+                  git config --local user.name "Blog Publisher Bot"
+
+                  # Add the new files
+                  git add docs/pages/grants/${{ github.event.client_payload.filename }}
+                  git add docs/pages/index.mdx || true
+
+                  # Commit the changes
+                  git commit -m "${{ github.event.client_payload.message }}"
+                  git push
+
+                  echo "✅ Blog post committed and pushed!"
+              env:
+                  GITHUB_TOKEN: ${{ secrets.BLOG_PUBLISH_TOKEN }}
+
+            - name: 🎉 Publication success
+              run: |
+                  echo "🎉 Blog post published successfully!"
+                  echo "📄 File: ${{ github.event.client_payload.filename }}"
+                  echo "🚀 Your existing deployment workflow will now trigger automatically!"

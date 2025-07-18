@@ -21,7 +21,7 @@ class BlogIndexGenerator {
             console.log(`🔍 Checking if grants directory exists: ${this.grantsDir}`);
             try {
                 await fs.access(this.grantsDir);
-                console.log(`✅ Grants directory exists`);
+                console.log('✅ Grants directory exists');
             } catch (error) {
                 console.log(`❌ Grants directory does not exist: ${error.message}`);
                 return [];
