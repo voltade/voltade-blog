@@ -1,10 +1,15 @@
-import fs from "node:fs";
+import fs from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+// Get __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 class BlogIndexGenerator {
     constructor() {
-        this.grantsDir = path.join(__dirname, "../docs/pages/grants/");
-        this.indexPath = path.join(__dirname, "../docs/pages/index.mdx");
+        this.grantsDir = path.join(__dirname, "../pages/grants/");
+        this.indexPath = path.join(__dirname, "../pages/index.mdx");
     }
 
     async scanGrantsDirectory() {
@@ -150,8 +155,10 @@ class BlogIndexGenerator {
     }
 }
 
-// Run if called directly
-if (require.main === module) {
+// Check if this module is being run directly
+const isMainModule = import.meta.url === `file://${process.argv[1]}`;
+
+if (isMainModule) {
     const generator = new BlogIndexGenerator();
 
     generator
@@ -166,4 +173,4 @@ if (require.main === module) {
         });
 }
 
-module.exports = { BlogIndexGenerator };
+export { BlogIndexGenerator };
