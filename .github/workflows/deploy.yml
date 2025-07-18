@@ -52,7 +52,7 @@ jobs:
               run: |
                   echo "🔄 Regenerating blog index..."
                   if [ -f "scripts/regenerate-index.js" ]; then
-                    node scripts/regenerate-index.js
+                    node docs/scripts/regenerate-index.js
                     echo "✅ Blog index regenerated!"
                   else
                     echo "⚠️  No regenerate script found, skipping..."
@@ -61,8 +61,8 @@ jobs:
             - name: 📝 Check Vocs config
               run: |
                   echo "📝 Checking Vocs configuration..."
-                  if [ -f "vocs.config.ts" ]; then
-                    echo "✅ Found vocs.config.ts"
+                  if [ -f "vocs.config.tsx" ]; then
+                    echo "✅ Found vocs.config.tsx"
                   elif [ -f "vocs.config.js" ]; then
                     echo "✅ Found vocs.config.js"
                   else
