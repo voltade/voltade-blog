@@ -83,7 +83,7 @@ jobs:
 
                   echo "✅ Build completed!"
                   echo "📁 Dist directory contents:"
-                  ls -la dist/ || echo "❌ No dist directory found"
+                  ls -la docs/dist/ || echo "❌ No dist directory found"
 
             - name: 🌐 Deploy to Cloudflare Pages
               uses: cloudflare/pages-action@v1
@@ -91,7 +91,7 @@ jobs:
                   apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
                   accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
                   projectName: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
-                  directory: dist
+                  directory: docs/dist
                   gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
             - name: 📝 Commit updated files
