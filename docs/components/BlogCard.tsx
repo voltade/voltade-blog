@@ -30,6 +30,8 @@ export const BlogCard: React.FC<BlogCardProps> = ({
                 return "#10b981";
             case "product support":
                 return "#f59e0b";
+            case "grants":
+                return "#ff5656ff";
             default:
                 return "#6b7280";
         }

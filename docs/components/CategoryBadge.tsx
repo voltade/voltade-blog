@@ -1,7 +1,7 @@
 interface CategoryBadgeProps {
     name: string;
     count: string;
-    color: "blue" | "green" | "purple" | "orange";
+    color: "blue" | "green" | "purple" | "orange" | "red";
     description: string;
     href: string;
 }
@@ -28,6 +28,11 @@ export const CategoryBadge: React.FC<CategoryBadgeProps> = ({ name, count, color
                 return {
                     background: "linear-gradient(135deg, #f59e0b, #d97706)",
                     iconColor: "#f59e0b",
+                };
+            case "red":
+                return {
+                    background: "linear-gradient(135deg, #ff5656ff, #d11a09ff)",
+                    iconColor: "#ff5656ff",
                 };
             default:
                 return {
@@ -62,9 +67,27 @@ export const CategoryBadge: React.FC<CategoryBadgeProps> = ({ name, count, color
                         </svg>
                     )}
                     {color === "orange" && (
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 -960 960 960"
+                            width="24px"
+                            fill="#f59e0b"
+                        >
                             <title>orange</title>
-                            <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM11 15V17H13V15H11ZM13 13.3551V14H11V12.5C11 11.9477 11.4477 11.5 12 11.5C12.8284 11.5 13.5 10.8284 13.5 10C13.5 9.17157 12.8284 8.5 12 8.5C11.2723 8.5 10.6656 9.01823 10.5288 9.70577L8.56731 9.31346C8.88637 7.70919 10.302 6.5 12 6.5C13.933 6.5 15.5 8.067 15.5 10C15.5 11.5855 14.4457 12.9248 13 13.3551Z" />
+                            <path d="M440-120v-80h320v-284q0-117-81.5-198.5T480-764q-117 0-198.5 81.5T200-484v244h-40q-33 0-56.5-23.5T80-320v-80q0-21 10.5-39.5T120-469l3-53q8-68 39.5-126t79-101q47.5-43 109-67T480-840q68 0 129 24t109 66.5Q766-707 797-649t40 126l3 52q19 9 29.5 27t10.5 38v92q0 20-10.5 38T840-249v49q0 33-23.5 56.5T760-120H440Zm-80-280q-17 0-28.5-11.5T320-440q0-17 11.5-28.5T360-480q17 0 28.5 11.5T400-440q0 17-11.5 28.5T360-400Zm240 0q-17 0-28.5-11.5T560-440q0-17 11.5-28.5T600-480q17 0 28.5 11.5T640-440q0 17-11.5 28.5T600-400Zm-359-62q-7-106 64-182t177-76q89 0 156.5 56.5T720-519q-91-1-167.5-49T435-698q-16 80-67.5 142.5T241-462Z" />
+                        </svg>
+                    )}
+                    {color === "red" && (
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 -960 960 960"
+                            width="24px"
+                            fill="#EA3323"
+                        >
+                            <title>red</title>
+                            <path d="m223-120-89-481q-37 7-65.5-17T40-680q0-33 23.5-56.5T120-760q33 0 56.5 23.5T200-680q0 14-4 26t-12 22q22 13 44.5 21.5T276-602q44 0 81.5-22t58.5-60l25-46q-19-11-30-29t-11-41q0-33 23.5-56.5T480-880q33 0 56.5 23.5T560-800q0 23-11 41t-30 29l25 46q21 38 58.5 60t81.5 22q25 0 47.5-8t44.5-21q-8-10-12-22.5t-4-26.5q0-33 23.5-56.5T840-760q33 0 56.5 23.5T920-680q0 38-28.5 62T826-601l-89 481H223Z" />
                         </svg>
                     )}
                 </div>

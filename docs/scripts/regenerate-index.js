@@ -10,21 +10,38 @@ class BlogIndexGenerator {
     constructor() {
         this.grantsDir = path.join(__dirname, "../pages/grants/");
         this.indexPath = path.join(__dirname, "../pages/index.mdx");
+
+        console.log(`🔍 Grants directory: ${this.grantsDir}`);
+        console.log(`🔍 Index file path: ${this.indexPath}`);
+        console.log(`🔍 Current __dirname: ${__dirname}`);
     }
 
     async scanGrantsDirectory() {
         try {
-            const files = await fs.readdir(this.grantsDir);
-            const mdxFiles = files.filter((file) => file.endsWith(".mdx"));
+            console.log(`🔍 Checking if grants directory exists: ${this.grantsDir}`);
+            try {
+                await fs.access(this.grantsDir);
+                console.log(`✅ Grants directory exists`);
+            } catch (error) {
+                console.log(`❌ Grants directory does not exist: ${error.message}`);
+                return [];
+            }
 
-            console.log(`📊 Found ${mdxFiles.length} grant posts`);
+            const files = await fs.readdir(this.grantsDir);
+            console.log(`🔍 All files in grants directory:`, files);
+
+            const mdxFiles = files.filter((file) => file.endsWith(".mdx"));
+            console.log(`📊 Found ${mdxFiles.length} grant posts:`, mdxFiles);
 
             const blogEntries = [];
 
             for (const file of mdxFiles) {
                 const filePath = path.join(this.grantsDir, file);
+                console.log(`🔍 Processing file: ${filePath}`);
+
                 const content = await fs.readFile(filePath, "utf8");
                 const frontmatter = this.parseFrontmatter(content);
+                console.log(`🔍 Frontmatter for ${file}:`, frontmatter);
 
                 if (frontmatter.title) {
                     blogEntries.push({
@@ -33,12 +50,12 @@ class BlogIndexGenerator {
                         ...frontmatter,
                     });
                     console.log(`✅ Processed: ${frontmatter.title}`);
+                } else {
+                    console.log(`⚠️ No title found for ${file}`);
                 }
             }
 
-            // Sort by date (newest first)
             blogEntries.sort((a, b) => new Date(b.date) - new Date(a.date));
-
             return blogEntries;
         } catch (error) {
             console.error("❌ Error scanning grants directory:", error);
@@ -60,18 +77,14 @@ class BlogIndexGenerator {
             if (key && valueParts.length > 0) {
                 let value = valueParts.join(":").trim();
 
-                // Remove quotes
                 if (value.startsWith('"') && value.endsWith('"')) {
                     value = value.slice(1, -1);
                 }
 
-                // Parse arrays
                 if (value.startsWith("[") && value.endsWith("]")) {
                     try {
                         value = JSON.parse(value);
-                    } catch (e) {
-                        // Keep as string if parsing fails
-                    }
+                    } catch (_) {}
                 }
 
                 frontmatter[key.trim()] = value;
@@ -99,32 +112,59 @@ class BlogIndexGenerator {
 
     async updateIndexFile(blogEntries) {
         try {
+            console.log(`🔍 Checking if index file exists: ${this.indexPath}`);
             let indexContent = await fs.readFile(this.indexPath, "utf8");
+            console.log(`🔍 Index file length: ${indexContent.length} characters`);
 
-            // Generate new blog cards
             const newBlogCards = this.generateBlogCards(blogEntries);
+            console.log(`🔍 Generated blog cards for ${blogEntries.length} grant posts`);
 
-            // Find and replace grants section
-            const grantsRegex = /(## Grants\s*\n\s*<section className="blog-grid" id="grants">)([\s\S]*?)(<\/section>)/;
-
-            if (grantsRegex.test(indexContent)) {
-                const newGrantsSection = `$1\n${newBlogCards}\n$3`;
-                indexContent = indexContent.replace(grantsRegex, newGrantsSection);
-                console.log(`🔄 Updated existing grants section`);
-            } else {
-                // If grants section doesn't exist, add it
-                const categoriesIndex = indexContent.indexOf("## Categories");
-                if (categoriesIndex !== -1) {
-                    const grantsSection = `\n## Grants\n\n<section className="blog-grid" id="grants">\n${newBlogCards}\n</section>\n\n`;
-                    indexContent =
-                        indexContent.slice(0, categoriesIndex) + grantsSection + indexContent.slice(categoriesIndex);
-                    console.log(`➕ Added new grants section`);
-                }
+            const grantsHeaderIndex = indexContent.indexOf("## Grants");
+            if (grantsHeaderIndex === -1) {
+                console.log(`❌ No \"## Grants\" header found in index.mdx`);
+                return;
             }
+            console.log(`✅ Found ## Grants header at position ${grantsHeaderIndex}`);
+
+            const afterHeader = indexContent.substring(grantsHeaderIndex);
+            const sectionMatch = afterHeader.match(
+                /## Grants\s*\n+(<section className=\"blog-grid\" id=\"grants\">)([\s\S]*?)(<\/section>)/
+            );
+
+            if (sectionMatch) {
+                console.log(`🔍 Found existing section, prepending new cards...`);
+                const existingContent = sectionMatch[2].trim();
+                const updatedContent = existingContent
+                    ? `\n${newBlogCards}\n${existingContent}\n`
+                    : `\n${newBlogCards}\n`;
+
+                const newSection = `${sectionMatch[1]}${updatedContent}${sectionMatch[3]}`;
+                const fullMatch = sectionMatch[0];
+                indexContent = indexContent.replace(fullMatch, `## Grants\n\n${newSection}`);
+                console.log(`✅ Prepended new cards to existing section`);
+            } else {
+                console.log(`🔍 No section found, adding new section after header...`);
+                const newSection = `## Grants\n\n<section className=\"blog-grid\" id=\"grants\">\n${newBlogCards}\n</section>`;
+                indexContent = indexContent.replace("## Grants", newSection);
+                console.log(`✅ Added new section after header`);
+            }
+
+            const allBlogCards = indexContent.match(/<BlogCard[^>]*>/g);
+            const grantsCards = allBlogCards ? allBlogCards.length : blogEntries.length;
 
             // Update category count
             const categoryRegex = /(<CategoryBadge\s+name="Grants"\s+count=")(\d+)(")/;
-            indexContent = indexContent.replace(categoryRegex, `$1${blogEntries.length}$3`);
+            const categoryMatch = indexContent.match(categoryRegex);
+            console.log(`🔍 Category badge match:`, categoryMatch);
+
+            if (categoryMatch) {
+                const currentCount = parseInt(categoryMatch[2]);
+                const newCount = currentCount + blogEntries.length;
+                indexContent = indexContent.replace(categoryRegex, `$1${newCount}$3`);
+                console.log(`🔄 Updated category count to ${newCount}`);
+            } else {
+                console.log(`⚠️ Could not find CategoryBadge for Grants to update count`);
+            }
 
             await fs.writeFile(this.indexPath, indexContent, "utf8");
 
@@ -155,7 +195,6 @@ class BlogIndexGenerator {
     }
 }
 
-// Check if this module is being run directly
 const isMainModule = import.meta.url === `file://${process.argv[1]}`;
 
 if (isMainModule) {
