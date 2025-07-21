@@ -12,7 +12,7 @@ jobs:
             - name: 📥 Checkout repository
               uses: actions/checkout@v4
               with:
-                  token: ${{ secrets.GITHUB_TOKEN }}
+                  token: ${{ secrets.BLOG_PUBLISH_TOKEN }}
                   fetch-depth: 0
 
             - name: 🟢 Setup Node.js
@@ -59,7 +59,7 @@ jobs:
 
                   echo "✅ Blog post committed and pushed!"
               env:
-                  GITHUB_TOKEN: ${{ secrets.voltade-blog-push-access }}
+                  GITHUB_TOKEN: ${{ secrets.BLOG_PUBLISH_TOKEN }}
 
             - name: 🎉 Publication success
               run: |
