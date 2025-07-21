@@ -59,7 +59,7 @@ jobs:
 
                   echo "✅ Blog post committed and pushed!"
               env:
-                  GITHUB_TOKEN: ${{ secrets.BLOG_PUBLISH_TOKEN }}
+                  GITHUB_TOKEN: ${{ secrets.voltade-blog-push-access }}
 
             - name: 🎉 Publication success
               run: |
