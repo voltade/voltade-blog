@@ -59,7 +59,7 @@ jobs:
 
                   echo "✅ Blog post committed and pushed!"
               env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  GITHUB_TOKEN: ${{ secrets.BLOG_PUBLISH_TOKEN }}
 
             - name: 🎉 Publication success
               run: |
