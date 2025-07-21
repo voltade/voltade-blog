@@ -199,6 +199,9 @@ h3 {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
+.vocs_DesktopSearch_search {
+    display: none;
+}
 /* Responsive Grid */
 @media (max-width: 768px) {
     .grid-cols-2,

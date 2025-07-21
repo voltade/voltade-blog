@@ -16,14 +16,23 @@ export default defineConfig({
 
     socials: [
         {
-            icon: "telegram",
-            link: "https://github.com/wevm/viem",
-        },
-        {
-            icon: "x",
-            link: "https://twitter.com/wevm_dev",
+            icon: "github",
+            link: "https://github.com/voltade/voltade-os",
         },
     ],
+    search: {
+        boostDocument(documentId) {
+            // Boost homepage and all blog categories
+            return documentId === "/" ||
+                documentId.startsWith("/product-updates") ||
+                documentId.startsWith("/sales-marketing") ||
+                documentId.startsWith("/crm") ||
+                documentId.startsWith("/grants") ||
+                documentId.startsWith("/product-support")
+                ? 2
+                : 1;
+        },
+    },
 
     sidebar: [
         {
@@ -75,7 +84,9 @@ export default defineConfig({
             items: [{ text: "Profile Permissions", link: "/product-support/profile-permissions" }],
         },
     ],
-
+    theme: {
+        colorScheme: "light",
+    },
     // Optional: Configure layout for better spacing
     editLink: {
         pattern: "https://github.com/your-username/voltade-blog/edit/main/docs/:path",
