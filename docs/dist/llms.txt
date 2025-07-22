@@ -1,0 +1,8 @@
+# Voltade Blog
+
+> AI-powered CRM insights and guides for businesses
+
+## Docs
+
+- [Comprehensive Grant Comparison and Selection Guide for Singapore SME Owners](/grants/singaporegrantcomparisonguide20250722033108md): Securing grant funding can be a crucial step in propelling your Singapore-based small or medium enterprise (SME) to new heights. With a plethora of grants available, selecting the right one can be daunting. This guide helps you navigate the grant landscape, ensuring you choose the best fit for your business needs.
+- [Singapore SME Grant Success Stories and Case Studies: A Comprehensive Guide](/grants/singaporegrantsuccessstories20250722053617md): In Singapore's dynamic business landscape, securing grant funding can be transformative for SMEs looking to innovate, expand, and thrive. This guide explores high-value grants, shares success stories, and offers practical insights to help you craft a winning application. Whether you're aiming for startup support, digital transformation, or international expansion, understanding what sets successful applications apart is crucial.
