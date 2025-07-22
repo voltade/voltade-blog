@@ -138,6 +138,14 @@
     box-shadow: none;
 }
 
+.custom_footer {
+    position: absolute;
+    right: 0;
+    width: var(--vocs_DocsLayout_leftGutterWidth);
+    padding: 2rem;
+    margin-top: 4rem;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .blog-grid {
@@ -161,6 +169,10 @@
     .stat-number {
         font-size: 2rem;
     }
+
+    .custom_footer {
+        display: none;
+    }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
@@ -170,6 +182,10 @@
 
     .featured-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .custom_footer {
+        display: none;
     }
 }
 
