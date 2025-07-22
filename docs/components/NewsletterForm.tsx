@@ -9,8 +9,10 @@ export const NewsletterForm = () => {
         e.preventDefault();
         setIsSubmitting(true);
 
+        const baseUrl = window.location.origin;
+
         try {
-            const response = await fetch("https://blog.voltade.com/api/newsletter", {
+            const response = await fetch(`${baseUrl}/api/newsletter`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),
