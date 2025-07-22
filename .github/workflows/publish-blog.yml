@@ -30,9 +30,27 @@ jobs:
             - name: 📝 Create blog post
               run: |
                   echo "📝 Creating blog post: ${{ github.event.client_payload.filename }}"
+                  echo "📊 Content size: ${{ github.event.client_payload.content_length }} characters"
+
                   mkdir -p docs/pages/grants
-                  echo "${{ github.event.client_payload.content }}" > "docs/pages/grants/${{ github.event.client_payload.filename }}"
-                  echo "✅ Blog post created!"
+
+                  # FIXED: Decode Base64 content to prevent shell execution
+                  echo "${{ github.event.client_payload.content_base64 }}" | base64 -d > "docs/pages/grants/${{ github.event.client_payload.filename }}"
+
+                  # Verify file was created successfully
+                  if [ -f "docs/pages/grants/${{ github.event.client_payload.filename }}" ]; then
+                    FILE_SIZE=$(wc -c < "docs/pages/grants/${{ github.event.client_payload.filename }}")
+                    echo "✅ Blog post created successfully!"
+                    echo "📄 File: docs/pages/grants/${{ github.event.client_payload.filename }}"
+                    echo "📊 File size: $FILE_SIZE bytes"
+                    
+                    # Show first few lines to verify content
+                    echo "🔍 Content preview:"
+                    head -n 5 "docs/pages/grants/${{ github.event.client_payload.filename }}"
+                  else
+                    echo "❌ Failed to create blog post file!"
+                    exit 1
+                  fi
 
             - name: 🔄 Regenerate blog index
               run: |
@@ -53,11 +71,19 @@ jobs:
                   git add docs/pages/grants/${{ github.event.client_payload.filename }}
                   git add docs/pages/index.mdx || true
 
-                  # Commit the changes
-                  git commit -m "${{ github.event.client_payload.message }}"
-                  git push
-
-                  echo "✅ Blog post committed and pushed!"
+                  # Check if there are changes to commit
+                  if git diff --staged --quiet; then
+                    echo "⚠️ No changes to commit"
+                  else
+                    # Commit the changes
+                    git commit -m "${{ github.event.client_payload.message }}"
+                    git push
+                    echo "✅ Blog post committed and pushed!"
+                    
+                    # Show commit info
+                    echo "📊 Commit details:"
+                    git log -1 --oneline
+                  fi
               env:
                   GITHUB_TOKEN: ${{ secrets.BLOG_PUBLISH_TOKEN }}
 
@@ -65,4 +91,6 @@ jobs:
               run: |
                   echo "🎉 Blog post published successfully!"
                   echo "📄 File: ${{ github.event.client_payload.filename }}"
+                  echo "📁 Path: docs/pages/grants/${{ github.event.client_payload.filename }}"
+                  echo "⏰ Published at: ${{ github.event.client_payload.timestamp }}"
                   echo "🚀 Your existing deployment workflow will now trigger automatically!"
