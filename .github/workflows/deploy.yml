@@ -93,22 +93,152 @@ jobs:
                   command: pages deploy docs/dist --project-name=${{ secrets.CLOUDFLARE_PROJECT_NAME }}
                   gitHubToken: ${{ secrets.BLOG_PUBLISH_TOKEN }}
 
-            - name: 📝 Commit updated files
+            - name: 📝 Commit new blog content
               run: |
-                  echo "📝 Committing any updated files..."
-                  git config --local user.email "action@github.com"
-                  git config --local user.name "GitHub Action Bot"
+                  echo "📝 Committing new blog content..."
+                  git config --local user.email "blog-publisher@voltade.com"
+                  git config --local user.name "Blog Publisher Bot"
 
-                  # Add any auto-generated files
-                  git add docs/pages/index.mdx || true
-                  git add docs/pages/grants/ || true
+                  # Add the blog files
+                  git add docs/pages/grants/
+                  git add review-dashboard/public/blog_drafts/
 
-                  # Only commit if there are changes
+                  # Check if there are changes to commit
                   if git diff --staged --quiet; then
-                    echo "📝 No changes to commit"
+                    echo "ℹ️ No changes to commit"
+                    exit 0
+                  fi
+
+                  # Commit the changes
+                  COMMIT_MSG="📝 Add new blog post: ${{ github.event.client_payload.blog_title || 'Auto-generated blog content' }}"
+                  git commit -m "$COMMIT_MSG"
+                  echo "✅ Changes committed locally"
+
+            - name: 🔄 Sync with remote before pushing
+              run: |
+                  echo "🔄 Syncing with remote before push..."
+
+                  # Fetch latest remote changes
+                  git fetch origin main
+
+                  # Check if remote has new commits
+                  LOCAL_COMMIT=$(git rev-parse HEAD)
+                  REMOTE_COMMIT=$(git rev-parse origin/main)
+
+                  if [ "$LOCAL_COMMIT" = "$REMOTE_COMMIT" ]; then
+                    echo "✅ No remote changes - ready to push"
                   else
-                    git commit -m "🤖 Auto-update blog index and grant posts"
-                    git push || echo "⚠️  Push failed, but continuing..."
+                    echo "🔄 Remote has new changes - syncing..."
+                    
+                    # Try to rebase our commit on top of remote changes
+                    if git rebase origin/main; then
+                      echo "✅ Successfully rebased local commits onto remote"
+                    else
+                      echo "⚠️ Rebase failed - trying merge strategy..."
+                      git rebase --abort
+                      
+                      # Try merge instead
+                      if git merge origin/main --no-edit; then
+                        echo "✅ Successfully merged remote changes"
+                      else
+                        echo "❌ Merge failed - handling conflicts..."
+                        
+                        # For blog workflows, we usually want to keep both changes
+                        # Check for conflicts and resolve automatically where possible
+                        git status --porcelain | grep "^UU" | while read status file; do
+                          echo "🔧 Auto-resolving conflict in: $file"
+                          # For markdown files, we can often just accept both changes
+                          git add "$file"
+                        done
+                        
+                        # Complete the merge
+                        if git diff --staged --quiet; then
+                          echo "❌ Unable to auto-resolve conflicts"
+                          git merge --abort
+                          echo "⚠️ Manual intervention required"
+                          exit 1
+                        else
+                          git commit --no-edit -m "🔀 Merge remote changes with local blog updates"
+                          echo "✅ Conflicts resolved and merged"
+                        fi
+                      fi
+                    fi
+                  fi
+
+            - name: 🚀 Push to remote with retry logic
+              run: |
+                  echo "🚀 Pushing changes to remote..."
+
+                  RETRY_COUNT=0
+                  MAX_RETRIES=3
+
+                  while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+                    RETRY_COUNT=$((RETRY_COUNT + 1))
+                    echo "📤 Push attempt $RETRY_COUNT of $MAX_RETRIES"
+                    
+                    if git push origin main; then
+                      echo "✅ Successfully pushed to remote"
+                      break
+                    else
+                      echo "⚠️ Push failed (attempt $RETRY_COUNT)"
+                      
+                      if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+                        echo "🔄 Fetching latest changes and retrying..."
+                        
+                        # Fetch and check for new changes
+                        git fetch origin main
+                        
+                        # If remote moved ahead, sync again
+                        if ! git merge-base --is-ancestor origin/main HEAD; then
+                          echo "🔄 Remote has moved ahead - syncing again..."
+                          
+                          if git rebase origin/main; then
+                            echo "✅ Rebased onto latest remote changes"
+                          else
+                            echo "⚠️ Rebase failed - trying merge..."
+                            git rebase --abort
+                            git merge origin/main --no-edit || {
+                              echo "❌ Merge failed on retry"
+                              git merge --abort
+                              exit 1
+                            }
+                          fi
+                        fi
+                        
+                        # Wait before retry
+                        sleep $((RETRY_COUNT * 2))
+                      else
+                        echo "❌ Max retries exceeded - push failed"
+                        echo "🔍 Repository state:"
+                        git status --short
+                        git log --oneline -3
+                        exit 1
+                      fi
+                    fi
+                  done
+
+            - name: ✅ Verify push success
+              run: |
+                  echo "✅ Verifying push was successful..."
+
+                  # Fetch to get latest remote state
+                  git fetch origin main
+
+                  # Compare local and remote commits
+                  LOCAL_COMMIT=$(git rev-parse HEAD)
+                  REMOTE_COMMIT=$(git rev-parse origin/main)
+
+                  if [ "$LOCAL_COMMIT" = "$REMOTE_COMMIT" ]; then
+                    echo "🎉 Push verification successful!"
+                    echo "📊 Blog publishing completed:"
+                    echo "   Latest commit: $LOCAL_COMMIT"
+                    echo "   Commit message: $(git log -1 --pretty=format:'%s')"
+                    echo "   Files changed: $(git diff HEAD~1 --name-only | wc -l)"
+                  else
+                    echo "❌ Push verification failed!"
+                    echo "   Local:  $LOCAL_COMMIT"
+                    echo "   Remote: $REMOTE_COMMIT"
+                    exit 1
                   fi
 
             - name: 🎉 Deployment success
