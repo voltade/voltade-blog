@@ -101,7 +101,7 @@ jobs:
 
                   # Add the blog files
                   git add docs/pages/grants/
-                  git add review-dashboard/public/blog_drafts/
+                  git add docs/pages/index.mdx
 
                   # Check if there are changes to commit
                   if git diff --staged --quiet; then
